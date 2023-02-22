@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import User
 
 
 class DateTimeMixin:
@@ -24,3 +25,12 @@ class Product(models.Model, DateTimeMixin):
 
     def __str__(self):
         return f"Продукт: {self.name} | Категория: {self.category.name}"
+
+
+class Basket(models.Model):
+    user = models.ForeignKey(to=User, on_delete=models.CASCADE)
+    product = models.ForeignKey(to=Product, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField(default=0)
+
+    def __str__(self):
+        return f'Корзина для: {self.user.email} | Продукт: {self.product.name}'
